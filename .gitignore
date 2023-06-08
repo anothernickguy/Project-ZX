@@ -94,3 +94,4 @@ sysinfo.txt
 Assets\Resources
 Assets\Resources\*
 Library
+*.backup

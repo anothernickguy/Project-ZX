@@ -11,29 +11,69 @@ public class PlayerShoot : MonoBehaviour
     public float cooldownTime = 1f;
     private int shotsFired = 0;
     private bool isCoolingDown = false;
+    private bool isShootingUp = false;
+    private bool isShootingDown = false;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (shotsFired < maxShots && !isCoolingDown)
+            if (!isShootingUp && !isShootingDown)
             {
-                Shoot();
-                shotsFired++;
-
-                if (shotsFired == maxShots)
+                if (shotsFired < maxShots && !isCoolingDown)
                 {
-                    StartCooldown();
+                    Shoot();
+                    shotsFired++;
+
+                    if (shotsFired == maxShots)
+                    {
+                        StartCooldown();
+                    }
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            isShootingUp = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            isShootingUp = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            isShootingDown = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            isShootingDown = false;
         }
     }
 
     private void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-        bulletRB.velocity = bullet.transform.right * bulletSpeed;
+        if (isShootingUp)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0f, 0f, 90f));
+            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
+            bulletRB.velocity = bullet.transform.up * bulletSpeed;
+        }
+        else if (isShootingDown)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0f, 0f, -90f));
+            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
+            bulletRB.velocity = -bullet.transform.up * bulletSpeed;
+        }
+        else
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
+            bulletRB.velocity = bullet.transform.right * bulletSpeed;
+        }
     }
 
     private void StartCooldown()
