@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public Image vida;
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
 
     public SpriteRenderer spriteRenderer;
     public Color damageColor = Color.red;
@@ -67,5 +69,9 @@ public class PlayerHealth : MonoBehaviour
     {
         // Aquí puedes agregar la lógica de lo que sucede cuando el jugador muere
         gameObject.SetActive(false);
+    }
+    void Update()
+    {
+        vida.fillAmount = (1.0f * currentHealth) / maxHealth; 
     }
 }
