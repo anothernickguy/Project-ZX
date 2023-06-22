@@ -6,6 +6,8 @@ public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
+    public Score scoreScript; // Referencia al script de Score
+
 
     public SpriteRenderer spriteRenderer;
     public Color damageColor = Color.red;
@@ -26,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            EnemyDie();
         }
         else
         {
@@ -53,9 +55,11 @@ public class EnemyHealth : MonoBehaviour
         isCoroutineRunning = false;
     }
 
-    private void Die()
+    private void EnemyDie()
     {
         // Desactivar el game object
         gameObject.SetActive(false);
+
+        scoreScript.IncreaseScore();
     }
 }
