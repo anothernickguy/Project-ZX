@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SecondShoot : MonoBehaviour
+public class Secondshoot : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform firePoint;
@@ -11,6 +11,7 @@ public class SecondShoot : MonoBehaviour
     public float bulletSpeed = 10f;
     public int maxShots = 3;
     public float cooldownTime = 1f;
+    public float splitDelay = 0.5f; // Tiempo de retraso antes de que se dividan los disparos
     private int shotsFired = 0;
     private bool isCoolingDown = false;
     private bool isShootingUp = false;
@@ -24,7 +25,7 @@ public class SecondShoot : MonoBehaviour
             {
                 if (shotsFired < maxShots && !isCoolingDown)
                 {
-                    Shoot(firePoint);
+                    StartCoroutine(SplitShoot(firePoint));
                     shotsFired++;
 
                     if (shotsFired == maxShots)
@@ -39,7 +40,7 @@ public class SecondShoot : MonoBehaviour
                 {
                     if (shotsFired < maxShots && !isCoolingDown)
                     {
-                        Shoot(firePointUp);
+                        StartCoroutine(SplitShoot(firePointUp));
                         shotsFired++;
 
                         if (shotsFired == maxShots)
@@ -52,7 +53,7 @@ public class SecondShoot : MonoBehaviour
                 {
                     if (shotsFired < maxShots && !isCoolingDown)
                     {
-                        Shoot(firePointDown);
+                        StartCoroutine(SplitShoot(firePointDown));
                         shotsFired++;
 
                         if (shotsFired == maxShots)
@@ -69,48 +70,78 @@ public class SecondShoot : MonoBehaviour
             isShootingUp = true;
             isShootingDown = false;
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            isShootingUp = false;
-            isShootingDown = true;
-        }
         else
         {
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                isShootingUp = false;
+                isShootingDown = true;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
             isShootingUp = false;
+        }
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
             isShootingDown = false;
         }
+
     }
 
-    private void Shoot(Transform shootP)
+    private IEnumerator SplitShoot(Transform shootP)
     {
-        float bulletSpacing = 0.5f; // Espaciado entre balas
-        float initialAngle = -15f; // Ángulo inicial para la separación de balas
+        // Esperar el tiempo de retraso antes de dividir el disparo
+        yield return new WaitForSeconds(splitDelay);
 
-        for (int i = 0; i < maxShots; i++)
-        {
-            float angle = initialAngle + i * bulletSpacing; // Calcular ángulo para cada bala
-            Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, rotation);
-            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = bullet.transform.right * bulletSpeed;
-        }
         if (isShootingUp)
         {
-            GameObject bullet = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 90f));
-            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = bullet.transform.up * bulletSpeed;
+            // Disparo hacia arriba
+            GameObject bullet1 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 90f));
+            Rigidbody2D bulletRB1 = bullet1.GetComponent<Rigidbody2D>();
+            bulletRB1.velocity = bullet1.transform.right * bulletSpeed;
+
+            GameObject bullet2 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 45f));
+            Rigidbody2D bulletRB2 = bullet2.GetComponent<Rigidbody2D>();
+            bulletRB2.velocity = bullet2.transform.right * bulletSpeed;
+
+            GameObject bullet3 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 135f));
+            Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
+            bulletRB3.velocity = bullet3.transform.right * bulletSpeed;
         }
         else if (isShootingDown)
         {
-            GameObject bullet = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, -90f));
-            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = -bullet.transform.up * bulletSpeed;
+
+            GameObject bullet1 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 90f));
+            Rigidbody2D bulletRB1 = bullet1.GetComponent<Rigidbody2D>();
+            bulletRB1.velocity = bullet1.transform.right * -bulletSpeed;
+
+            GameObject bullet2 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 45f));
+            Rigidbody2D bulletRB2 = bullet2.GetComponent<Rigidbody2D>();
+            bulletRB2.velocity = bullet2.transform.right * -bulletSpeed;
+
+            GameObject bullet3 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 135f));
+            Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
+            bulletRB3.velocity = bullet3.transform.right * -bulletSpeed;
+            
         }
         else
         {
-            GameObject bullet = Instantiate(bulletPrefab, shootP.position, shootP.rotation);
-            Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = bullet.transform.right * bulletSpeed;
+            // Disparo normal
+            GameObject bullet1 = Instantiate(bulletPrefab, shootP.position, firePoint.rotation);
+            Rigidbody2D bulletRB1 = bullet1.GetComponent<Rigidbody2D>();
+            bulletRB1.velocity = bullet1.transform.right * bulletSpeed;
+
+            Vector3 newAngle = firePoint.rotation.eulerAngles + new Vector3(0f, 0f, +15f);
+            GameObject bullet2 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(newAngle.x, newAngle.y, newAngle.z));
+            Rigidbody2D bulletRB2 = bullet2.GetComponent<Rigidbody2D>();
+            bulletRB2.velocity = bullet2.transform.right * bulletSpeed;
+
+            newAngle = firePoint.rotation.eulerAngles + new Vector3(0f, 0f, -15f);
+            GameObject bullet3 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(newAngle.x, newAngle.y, newAngle.z));// 
+            Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
+            bulletRB3.velocity = bullet3.transform.right * bulletSpeed;
         }
     }
 

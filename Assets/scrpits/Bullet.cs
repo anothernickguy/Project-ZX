@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float bulletSpeed = 10f;
+    // public float bulletSpeed = 10f;
     public int damageAmount = 10;
 
     private void Update()
     {
         // Mover la bala hacia adelante
-        transform.Translate(Vector2.right * bulletSpeed * Time.deltaTime);
+        // transform.Translate(Vector2.right * bulletSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

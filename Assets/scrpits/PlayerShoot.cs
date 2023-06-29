@@ -94,13 +94,13 @@ public class PlayerShoot : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 90f));
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = bullet.transform.up * bulletSpeed;
+            bulletRB.velocity = bullet.transform.right * bulletSpeed;
         }
         else if (isShootingDown)
         {
             GameObject bullet = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, -90f));
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
-            bulletRB.velocity = -bullet.transform.up * bulletSpeed;
+            bulletRB.velocity = -bullet.transform.right * -bulletSpeed;
         }
         else
         {

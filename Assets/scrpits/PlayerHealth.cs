@@ -13,6 +13,9 @@ public class PlayerHealth : MonoBehaviour
     public Color damageColor = Color.red;
     public float damageColorDuration = 0.2f;
 
+    public float invulnerabilityTime = 1f; // Tiempo de invulnerabilidad después de recibir daño
+    public float knockbackForce = 10f; // Fuerza de impulso hacia atrás al recibir daño
+
     private bool isCoroutineRunning = false;
     private Color originalColor;
 
@@ -24,17 +27,19 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
-        currentHealth -= damageAmount;
+        if (!isCoroutineRunning)
+        {
+            currentHealth -= damageAmount;
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            if (!isCoroutineRunning)
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+            else
             {
                 StartCoroutine(ChangeSpriteColor());
+                StartCoroutine(ApplyKnockback());
+                StartCoroutine(InvulnerabilityTime());
             }
         }
     }
@@ -65,13 +70,38 @@ public class PlayerHealth : MonoBehaviour
         isCoroutineRunning = false;
     }
 
+    private System.Collections.IEnumerator ApplyKnockback()
+    {
+        // Obtener la dirección contraria hacia donde ve el jugador
+        Vector2 knockbackDirection = -transform.right + new Vector3(0,1,0);
+
+        // Aplicar el impulso hacia atrás
+        GetComponent<Rigidbody2D>().AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+        // Esperar un frame para evitar que el jugador quede atascado en una colisión
+        yield return null;
+    }
+
+    private System.Collections.IEnumerator InvulnerabilityTime()
+    {
+        // Hacer que el jugador sea invulnerable
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("player"), LayerMask.NameToLayer("enemy"), true);
+
+        // Esperar el tiempo de invulnerabilidad
+        yield return new WaitForSeconds(invulnerabilityTime);
+
+        // Hacer que el jugador sea vulnerable nuevamente
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("player"), LayerMask.NameToLayer("enemy"), false);
+    }
+
     private void Die()
     {
         // Aquí puedes agregar la lógica de lo que sucede cuando el jugador muere
         gameObject.SetActive(false);
     }
+
     void Update()
     {
-        vida.fillAmount = (1.0f * currentHealth) / maxHealth; 
+        vida.fillAmount = (1.0f * currentHealth) / maxHealth;
     }
 }
