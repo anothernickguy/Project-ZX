@@ -10,27 +10,29 @@ public class EnemyController : MonoBehaviour
     private Transform playerTransform;
     private bool isMovingRight = true;
     private Vector2 initialPosition;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         initialPosition = rb.position;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
         float dist = rb.position.x - initialPosition.x;
-        // Debug.Log(dist);
 
-        
-        if(dist > 0 && isMovingRight && dist >= patrolDistance)
+        if (dist > 0 && isMovingRight && dist >= patrolDistance)
         {
             isMovingRight = !isMovingRight;
+            FlipSprite();
         }
-        if (dist < 0 && !isMovingRight && dist <= patrolDistance*-1)
+        if (dist < 0 && !isMovingRight && dist <= patrolDistance * -1)
         {
             isMovingRight = !isMovingRight;
+            FlipSprite();
         }
 
         if (isMovingRight)
@@ -52,5 +54,9 @@ public class EnemyController : MonoBehaviour
     {
         rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
     }
-}
 
+    private void FlipSprite()
+    {
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+}

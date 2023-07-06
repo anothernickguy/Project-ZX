@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootToggle : MonoBehaviour
 {
     public PlayerShoot playerShootScript;
-    public Secondshoot secondShootScript;
+    public SecondShoot secondShootScript;
 
     private void Update()
     {

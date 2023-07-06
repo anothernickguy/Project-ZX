@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Secondshoot : MonoBehaviour
+public class SecondShoot : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform firePoint;

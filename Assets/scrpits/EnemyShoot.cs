@@ -9,10 +9,14 @@ public class EnemyShoot : MonoBehaviour
     public float bulletSpeed = 10f;
     public float shootingInterval = 2f; // Intervalo de tiempo entre disparos
     private bool canShoot = true;
+    private PlayerController pc;
+    [SerializeField] private float minDistance;
 
     private void Start()
     {
+        pc = FindObjectOfType<PlayerController>();
         StartCoroutine(ShootCoroutine());
+        
     }
 
     private IEnumerator ShootCoroutine()
@@ -21,6 +25,11 @@ public class EnemyShoot : MonoBehaviour
         {
             if (canShoot)
             {
+                while(Vector2.Distance(pc.transform.position, this.transform.position) > minDistance)
+                {
+                    yield return null;
+                }
+                
                 Shoot();
                 canShoot = false;
                 yield return new WaitForSeconds(shootingInterval);
