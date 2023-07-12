@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6789624194693092286}
   - component: {fileID: 7022733480913614860}
   - component: {fileID: 3348269686837031}
+  - component: {fileID: 1279731351744151092}
   m_Layer: 0
   m_Name: RockTile-export_0 (4)
   m_TagString: Untagged
@@ -133,3 +134,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.14401397, y: 0.16835594}
   m_EdgeRadius: 0
+--- !u!114 &1279731351744151092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402251615018450837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20456dddf00e3154489b52000f2138e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthAmount: 20
