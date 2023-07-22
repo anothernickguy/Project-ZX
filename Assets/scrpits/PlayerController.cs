@@ -7,22 +7,28 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
     public int maxJumps = 2;  // Número máximo de saltos
+    public Transform groundCheck; // Punto para verificar si el jugador está en el suelo
+    public LayerMask groundLayer; // Capa del suelo
     private int jumpsRemaining;  // Saltos restantes
     private bool isJumping = false;
     private bool isFacingRight = true;  // Indica si el jugador está mirando a la derecha
+    private bool isTouchingGround; // Indica si el jugador está tocando el suelo
     private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    private Animator animator; // Referencia al controlador de animaciones
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>(); // Obtener el componente Animator
         jumpsRemaining = maxJumps;
     }
 
     private void Update()
     {
         float moveX = Input.GetAxis("Horizontal");
+
+        // Verificar si el jugador está tocando el suelo en el eje x
+        isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
         // Movimiento horizontal
         rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
@@ -44,6 +50,9 @@ public class PlayerController : MonoBehaviour
             {
                 rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 isJumping = true;
+
+                // Reproducir la animación de salto (si existe)
+                animator.SetTrigger("Jump");
             }
             else
             {
@@ -52,6 +61,16 @@ public class PlayerController : MonoBehaviour
             }
             jumpsRemaining--;
         }
+
+        // Control de animaciones
+        // La variable "Speed" en el controlador de animaciones controlará la reproducción de la animación de caminar
+        animator.SetFloat("Speed", Mathf.Abs(moveX));
+
+        // La variable "IsJumping" en el controlador de animaciones controlará la reproducción de la animación de salto
+        animator.SetBool("IsJumping", isJumping);
+
+        // La variable "Wall" en el controlador de animaciones controlará la reproducción de la animación de pared
+        animator.SetBool("Wall", isTouchingGround);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -61,6 +80,9 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
             jumpsRemaining = maxJumps;
+
+            // Reproducir la animación de aterrizaje (si existe)
+            animator.SetTrigger("Land");
         }
     }
 
@@ -70,4 +92,3 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0f, 180f, 0f);
     }
 }
-
