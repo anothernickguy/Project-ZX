@@ -158,7 +158,7 @@ MonoBehaviour:
   bulletSpeed: 10
   shootingInterval: 3
   shootingAnimationDuration: 0.1
-  minDistance: 10
+  minDistance: 5
 --- !u!50 &2068253972083624438
 Rigidbody2D:
   serializedVersion: 4

@@ -106,9 +106,9 @@ GameObject:
   - component: {fileID: 2140296990612407202}
   - component: {fileID: 2140296990612407220}
   - component: {fileID: 2140296990612407226}
-  - component: {fileID: 2140296990612407227}
   - component: {fileID: 2140296990612407224}
   - component: {fileID: 2140296990612407225}
+  - component: {fileID: 2140296990612407227}
   - component: {fileID: 2140296990612407230}
   - component: {fileID: 2140296990612407231}
   - component: {fileID: 2140296990612407223}
@@ -251,25 +251,6 @@ MonoBehaviour:
   damageColorDuration: 0.2
   invulnerabilityTime: 1
   knockbackForce: 10
---- !u!114 &2140296990612407227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140296990612407203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2e9a95341e4a14bafdf3d542cb5cf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 2846996201734203846, guid: 21e16f5f8e3434243ba0e417fa57c347, type: 3}
-  firePoint: {fileID: 2140296990342152159}
-  firePointUp: {fileID: 2140296989607363151}
-  firePointDown: {fileID: 2140296989639469903}
-  bulletSpeed: 10
-  maxShots: 3
-  cooldownTime: 1
 --- !u!114 &2140296990612407224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +286,25 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &2140296990612407227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140296990612407203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2e9a95341e4a14bafdf3d542cb5cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2846996201734203846, guid: 21e16f5f8e3434243ba0e417fa57c347, type: 3}
+  firePoint: {fileID: 2140296990342152159}
+  firePointUp: {fileID: 2140296989607363151}
+  firePointDown: {fileID: 2140296989639469903}
+  bulletSpeed: 10
+  maxShots: 3
+  cooldownTime: 1
 --- !u!114 &2140296990612407230
 MonoBehaviour:
   m_ObjectHideFlags: 0
