@@ -305,6 +305,8 @@ MonoBehaviour:
   bulletSpeed: 10
   maxShots: 3
   cooldownTime: 1
+  shootSound: {fileID: 8300000, guid: 406f437410175aa438f6c60b81939c7c, type: 3}
+  cooldownSound: {fileID: 8300000, guid: cd85c9579fa8ca8409be29f41d4fab24, type: 3}
 --- !u!114 &2140296990612407230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +327,8 @@ MonoBehaviour:
   maxShots: 3
   cooldownTime: 1
   splitDelay: 0.5
+  shootSound: {fileID: 8300000, guid: 406f437410175aa438f6c60b81939c7c, type: 3}
+  cooldownSound: {fileID: 8300000, guid: cd85c9579fa8ca8409be29f41d4fab24, type: 3}
 --- !u!114 &2140296990612407231
 MonoBehaviour:
   m_ObjectHideFlags: 0

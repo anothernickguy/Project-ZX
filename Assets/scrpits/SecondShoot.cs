@@ -12,10 +12,21 @@ public class SecondShoot : MonoBehaviour
     public int maxShots = 3;
     public float cooldownTime = 1f;
     public float splitDelay = 0.5f; // Tiempo de retraso antes de que se dividan los disparos
+    public AudioClip shootSound;
+    public AudioClip cooldownSound;
+
     private int shotsFired = 0;
     private bool isCoolingDown = false;
     private bool isShootingUp = false;
     private bool isShootingDown = false;
+    private AudioSource shootAudioSource;
+    private AudioSource cooldownAudioSource;
+
+    private void Start()
+    {
+        shootAudioSource = gameObject.AddComponent<AudioSource>();
+        cooldownAudioSource = gameObject.AddComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -87,7 +98,6 @@ public class SecondShoot : MonoBehaviour
         {
             isShootingDown = false;
         }
-
     }
 
     private IEnumerator SplitShoot(Transform shootP)
@@ -124,7 +134,7 @@ public class SecondShoot : MonoBehaviour
             GameObject bullet3 = Instantiate(bulletPrefab, shootP.position, Quaternion.Euler(0f, 0f, 135f));
             Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
             bulletRB3.velocity = bullet3.transform.right * -bulletSpeed;
-            
+
         }
         else
         {
@@ -143,12 +153,18 @@ public class SecondShoot : MonoBehaviour
             Rigidbody2D bulletRB3 = bullet3.GetComponent<Rigidbody2D>();
             bulletRB3.velocity = bullet3.transform.right * bulletSpeed;
         }
+
+        // Reproducir el sonido de disparo
+        shootAudioSource.PlayOneShot(shootSound);
     }
 
     private void StartCooldown()
     {
         isCoolingDown = true;
         Invoke("ResetShotsFired", cooldownTime);
+
+        // Reproducir el sonido de cooldown
+        cooldownAudioSource.PlayOneShot(cooldownSound);
     }
 
     private void ResetShotsFired()

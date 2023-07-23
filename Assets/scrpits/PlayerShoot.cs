@@ -11,10 +11,21 @@ public class PlayerShoot : MonoBehaviour
     public float bulletSpeed = 10f;
     public int maxShots = 3;
     public float cooldownTime = 1f;
+    public AudioClip shootSound;
+    public AudioClip cooldownSound;
+
     private int shotsFired = 0;
     private bool isCoolingDown = false;
     private bool isShootingUp = false;
     private bool isShootingDown = false;
+    private AudioSource shootAudioSource;
+    private AudioSource cooldownAudioSource;
+
+    private void Start()
+    {
+        shootAudioSource = gameObject.AddComponent<AudioSource>();
+        cooldownAudioSource = gameObject.AddComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -69,7 +80,8 @@ public class PlayerShoot : MonoBehaviour
             isShootingUp = true;
             isShootingDown = false;
         }
-        else { 
+        else
+        {
             if (Input.GetKey(KeyCode.DownArrow))
             {
                 isShootingUp = false;
@@ -85,7 +97,6 @@ public class PlayerShoot : MonoBehaviour
         {
             isShootingDown = false;
         }
-
     }
 
     private void Shoot(Transform shootP)
@@ -108,12 +119,18 @@ public class PlayerShoot : MonoBehaviour
             Rigidbody2D bulletRB = bullet.GetComponent<Rigidbody2D>();
             bulletRB.velocity = bullet.transform.right * bulletSpeed;
         }
+
+        // Reproducir el sonido de disparo
+        shootAudioSource.PlayOneShot(shootSound);
     }
 
     private void StartCooldown()
     {
         isCoolingDown = true;
         Invoke("ResetShotsFired", cooldownTime);
+
+        // Reproducir el sonido de cooldown
+        cooldownAudioSource.PlayOneShot(cooldownSound);
     }
 
     private void ResetShotsFired()
