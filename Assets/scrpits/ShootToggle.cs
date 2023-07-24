@@ -6,6 +6,8 @@ public class ShootToggle : MonoBehaviour
 {
     public PlayerShoot playerShootScript;
     public SecondShoot secondShootScript;
+    public GameObject objectToActivate;
+    public GameObject objectToDeactivate;
 
     private void Update()
     {
@@ -14,6 +16,10 @@ public class ShootToggle : MonoBehaviour
             // Alternar la activación de los scripts
             playerShootScript.enabled = !playerShootScript.enabled;
             secondShootScript.enabled = !secondShootScript.enabled;
+
+            // Activar y desactivar los Game Objects
+            objectToActivate.SetActive(!objectToActivate.activeSelf);
+            objectToDeactivate.SetActive(!objectToDeactivate.activeSelf);
         }
     }
 }
