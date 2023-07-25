@@ -42,7 +42,7 @@ public class EndScreen : MonoBehaviour
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("menu principal");
+        SceneManager.LoadScene("tittle");
     }
 
 
